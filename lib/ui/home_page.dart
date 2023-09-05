@@ -1,4 +1,3 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:movies/ui/film_pages.dart';
 
@@ -26,48 +25,53 @@ class _HomePageState extends State<HomePage>
     super.dispose();
   }
 
+  List<String> typeOfMovie = [
+    "all",
+    "action",
+    "comedia"
+        "Romance",
+    "terror",
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: ListView(
-        physics: NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              GestureDetector(
-                onTap: () => pageController.jumpToPage(0),
-                child: onTopText(
-                    title: "Series",
-                    color: currentPage == 0 ? Colors.red : Colors.white),
-              ),
-              GestureDetector(
-                onTap: () => pageController.jumpToPage(1),
-                child: onTopText(
-                    title: "Filmes",
-                    color: currentPage == 1 ? Colors.red : Colors.white),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height,
-            child: PageView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: 3,
-              onPageChanged: (value) => setState(
-                () {
-                  currentPage = value;
-                },
-              ),
-              controller: pageController,
-              itemBuilder: (context, index) {
-                return paginas[index];
-              },
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.black,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            GestureDetector(
+              onTap: () => pageController.jumpToPage(0),
+              child: onTopText(
+                  title: "Series",
+                  color: currentPage == 0 ? Colors.red : Colors.white),
             ),
-          )
-        ],
+            GestureDetector(
+              onTap: () => pageController.jumpToPage(1),
+              child: onTopText(
+                  title: "Filmes",
+                  color: currentPage == 1 ? Colors.red : Colors.white),
+            ),
+          ],
+        ),
+      ),
+      body: SizedBox(
+        height: MediaQuery.of(context).size.height,
+        child: PageView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: 3,
+          onPageChanged: (value) => setState(
+            () {
+              currentPage = value;
+            },
+          ),
+          controller: pageController,
+          itemBuilder: (context, index) {
+            return paginas[index];
+          },
+        ),
       ),
     );
   }
@@ -86,7 +90,7 @@ class _HomePageState extends State<HomePage>
   }
 }
 
-List paginas = [
+List<Widget> paginas = [
   Container(
     color: Colors.white,
   ),
