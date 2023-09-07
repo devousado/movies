@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:movies/ui/film_pages.dart';
 
-class HomePage extends StatefulWidget {
+import '../service/api_service.dart';
+
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  ConsumerState<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage>
+class _HomePageState extends ConsumerState<HomePage>
     with SingleTickerProviderStateMixin {
   late PageController pageController;
   int currentPage = 0;
@@ -17,6 +21,7 @@ class _HomePageState extends State<HomePage>
   void initState() {
     pageController = PageController(initialPage: currentPage);
     super.initState();
+    getactorInTrending();
   }
 
   @override
@@ -43,7 +48,7 @@ class _HomePageState extends State<HomePage>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             GestureDetector(
-              onTap: () => pageController.jumpToPage(0),
+              onTap: () {},
               child: onTopText(
                   title: "Series",
                   color: currentPage == 0 ? Colors.red : Colors.white),
