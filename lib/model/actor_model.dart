@@ -15,4 +15,7 @@ class ActorModel {
       image: map['profile_path'] as String,
     );
   }
+
+  @override
+  String toString() => 'ActorModel(id: $id, name: $name, image: $image)';
 }

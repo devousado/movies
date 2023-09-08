@@ -9,6 +9,7 @@ import 'package:movies/ui/util/shimmer.dart';
 import 'package:movies/ui/util/style.dart';
 
 import 'carousel.dart';
+import 'movie_description_page.dart';
 
 class FilmPage extends ConsumerStatefulWidget {
   const FilmPage({super.key});
@@ -19,12 +20,6 @@ class FilmPage extends ConsumerStatefulWidget {
 
 class _FilmPageState extends ConsumerState<FilmPage> {
   int currenIndexOfTypeOfMovie = 0;
-  @override
-  void initState() {
-    ref.read(movieState);
-    ref.read(populaFilmState);
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,15 +43,43 @@ class _FilmPageState extends ConsumerState<FilmPage> {
           Carossel(
             length: movieList.value!.length,
             itemBuilder: (context, index, currentIndex) {
-              return ClipRRect(
-                borderRadius: BorderRadius.circular(25),
-                child: CachedNetworkImage(
-                  fit: BoxFit.cover,
-                  imageUrl:
-                      "https://image.tmdb.org/t/p/w500${movieList.value![index].backdroppath}",
-                  imageBuilder: (context, imageProvider) {
-                    return Image(image: imageProvider);
-                  },
+              return GestureDetector(
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) {
+                    return Hero(
+                      tag: 'hero-rectangle',
+                      child: MovieDetailPage(
+                        movieId: movieList.value![index].id,
+                      ),
+                    );
+                  }),
+                ),
+                child: Stack(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(25),
+                      child: CachedNetworkImage(
+                        fit: BoxFit.cover,
+                        imageUrl:
+                            "https://image.tmdb.org/t/p/w500${movieList.value![index].backdroppath}",
+                        imageBuilder: (context, imageProvider) {
+                          return Image(image: imageProvider);
+                        },
+                      ),
+                    ),
+                    Positioned(
+                      bottom: MediaQuery.of(context).size.height * 0.01,
+                      left: 6,
+                      child: Text(
+                        movieList.value![index].title,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                            overflow: TextOverflow.ellipsis),
+                      ),
+                    )
+                  ],
                 ),
               );
             },
@@ -100,27 +123,39 @@ class _FilmPageState extends ConsumerState<FilmPage> {
           ),
           _customText("Populares"),
           SizedBox(
-            height: 290,
+            height: MediaQuery.of(context).size.height * 0.40,
             child: Carossel(
               length: popularFilm.value!.length,
               itemBuilder: (p0, index, p2) {
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.27,
-                        width: 160,
-                        child: CachedNetworkImage(
-                          imageUrl:
-                              "https://image.tmdb.org/t/p/w500${popularFilm.value![index].backdroppath}",
-                          imageBuilder: (context, imageProvider) {
-                            return Image(
-                              image: imageProvider,
-                              fit: BoxFit.cover,
-                            );
-                          },
+                    GestureDetector(
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) {
+                          return Hero(
+                            tag: 'hero-rectangle',
+                            child: MovieDetailPage(
+                              movieId: popularFilm.value![index].id,
+                            ),
+                          );
+                        }),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.27,
+                          width: 160,
+                          child: CachedNetworkImage(
+                            imageUrl:
+                                "https://image.tmdb.org/t/p/w500${popularFilm.value![index].backdroppath}",
+                            imageBuilder: (context, imageProvider) {
+                              return Image(
+                                image: imageProvider,
+                                fit: BoxFit.cover,
+                              );
+                            },
+                          ),
                         ),
                       ),
                     ),
@@ -130,15 +165,6 @@ class _FilmPageState extends ConsumerState<FilmPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Container(
-                          decoration: BoxDecoration(
-                              color: const Color(0xFF1a1b23),
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Text(
-                            popularFilm.value![index].popularity.toString(),
-                            style: style,
-                          ),
-                        ),
                         Container(
                           decoration: BoxDecoration(
                             color: const Color(0xFF1a1b23),
@@ -196,7 +222,7 @@ class _FilmPageState extends ConsumerState<FilmPage> {
             height: 20,
           ),
           SizedBox(
-            height: 80,
+            height: MediaQuery.of(context).size.height * 0.20,
             child: ListView.separated(
                 separatorBuilder: (context, index) => SizedBox(
                       width: 18,
@@ -211,8 +237,15 @@ class _FilmPageState extends ConsumerState<FilmPage> {
                     imageBuilder: (context, imageProvider) {
                       return Column(
                         children: [
-                          CircleAvatar(
-                            backgroundImage: imageProvider,
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(15),
+                            child: Container(
+                              height: MediaQuery.of(context).size.height * 0.15,
+                              width: MediaQuery.of(context).size.width * 0.20,
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: imageProvider, fit: BoxFit.cover)),
+                            ),
                           ),
                           Text(
                             listOfActor.value![index].name,
@@ -231,9 +264,11 @@ class _FilmPageState extends ConsumerState<FilmPage> {
         ],
       );
     } else {
-      return Text(
-        "Erro ao carregar os Dados",
-        style: style,
+      return Center(
+        child: Text(
+          "Erro ao carregar os Dados",
+          style: style,
+        ),
       );
     }
   }

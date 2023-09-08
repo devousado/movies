@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:movies/model/actor_model.dart';
+import 'package:movies/model/cast_model.dart';
 import 'package:movies/model/genre_model.dart';
+import 'package:movies/model/movie_detail_model.dart';
 import 'package:movies/model/movie_model.dart';
 import 'package:movies/service/api_service.dart';
 
@@ -12,3 +14,9 @@ final genreState = FutureProvider<List<GenreModel>>(
     (ref) => ref.read(providerFilm).getListOfGenre());
 final actorState = FutureProvider<List<ActorModel>>(
     (ref) => ref.read(providerFilm).getactorInTrending());
+final castState = FutureProvider.family<List<CastModel>, int>(
+    (ref, id) => ref.read(providerFilm).getListOfCast(id));
+final detailState = FutureProvider.family<MovieDetailModel, int>(
+    (ref, id) => ref.read(providerFilm).detailMovie(id));
+final videoState = FutureProvider.family<String, int>(
+    (ref, id) => ref.read(providerFilm).getVideoYoutId(id));
