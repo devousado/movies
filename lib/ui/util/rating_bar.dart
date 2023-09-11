@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
+// ignore: must_be_immutable
 class CustomRatingBar extends StatelessWidget {
   CustomRatingBar({super.key, required this.numberOfRating});
   double numberOfRating;

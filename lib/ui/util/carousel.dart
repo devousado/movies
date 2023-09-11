@@ -1,21 +1,21 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:movies/model/movie_model.dart';
 
 // ignore: must_be_immutable
 class Carossel extends StatefulWidget {
   Carossel({
     super.key,
+    required this.durationTime,
     required this.viewportFraction,
     required this.aspectRatio,
-    required this.movies,
     required this.itemBuilder,
     required this.length,
   });
   int length;
+  int durationTime;
   double viewportFraction;
   double aspectRatio;
-  List<MovieModel> movies;
+
   Widget Function(BuildContext, int, int)? itemBuilder;
   @override
   State<Carossel> createState() => _CarosselState();
@@ -47,9 +47,9 @@ class _CarosselState extends State<Carossel> {
         options: CarouselOptions(
           enableInfiniteScroll: true,
           autoPlayAnimationDuration: const Duration(milliseconds: 500),
-          autoPlay: false,
+          autoPlay: true,
           aspectRatio: widget.aspectRatio,
-          autoPlayInterval: const Duration(seconds: 5),
+          autoPlayInterval: Duration(seconds: widget.durationTime),
           viewportFraction: widget.viewportFraction,
           enlargeCenterPage: true,
           pauseAutoPlayInFiniteScroll: true,

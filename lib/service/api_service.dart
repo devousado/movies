@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:math';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as https;
 import 'package:movies/const/api_key.dart';
@@ -30,12 +32,32 @@ class ApiService {
     }
   }
 
+  Future<List<MovieModel>> getListOfFilmThatArePlayngNow() async {
+    int randorPage = Random().nextInt(5) + 1;
+    try {
+      List<MovieModel> filmPlayngNow = [];
+      final response = await https.get(
+          Uri.parse(
+              "$url/movie/now_playing?api_key=$apiKey&language=pt&page=$randorPage"),
+          headers: headers);
+      var jsonDecodeData = jsonDecode(response.body);
+      for (var element in jsonDecodeData["results"]) {
+        filmPlayngNow.add(MovieModel.fromMap(element));
+      }
+
+      return filmPlayngNow;
+    } on Exception catch (e) {
+      throw Exception(e);
+    }
+  }
+
   Future<List<MovieModel>> getPopularFilm() async {
     List<MovieModel> listOfPopularFilm = [];
+    int randorPage = Random().nextInt(5) + 1;
     try {
       final response = await http.get(
           Uri.parse(
-            "$url/movie/now_playing?api_key=$apiKey&language=pt",
+            "$url/movie/now_playing?api_key=$apiKey&language=pt&page=$randorPage",
           ),
           headers: headers);
       var jsonDecodeData = jsonDecode(response.body);
@@ -97,8 +119,8 @@ class ApiService {
   Future<List<CastModel>> getListOfCast(int movieId) async {
     List<CastModel> listCast = [];
     try {
-      final response = await https
-          .get(Uri.parse("$url/movie/$movieId/credits?api_key=$apiKey"));
+      final response = await https.get(
+          Uri.parse("$url/movie/$movieId/credits?api_key=$apiKey&language=pt"));
 
       var jsonDecodeData = jsonDecode(response.body);
 
@@ -118,6 +140,39 @@ class ApiService {
           await https.get(Uri.parse("$url/movie/$id/videos?api_key=$apiKey"));
       var jsonDecodeData = jsonDecode(response.body);
       return jsonDecodeData["results"][0]["key"];
+    } on Exception catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<List<MovieModel>> searchMovie(String movieName) async {
+    List<MovieModel> searchResult = [];
+    try {
+      final response = await https.get(Uri.parse(
+          "$url/search/movie?api_key=$apiKey&query=$movieName&language=pt"));
+      var jsonDecodeData = jsonDecode(response.body);
+      for (var element in jsonDecodeData["results"]) {
+        searchResult.add(MovieModel.fromMap(element));
+      }
+
+      return searchResult;
+    } on Exception catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<List<MovieModel>> getMovieByGenre(int genre) async {
+    List<MovieModel> genreResult = [];
+    try {
+      final response = await https.get(Uri.parse(
+          "$url/discover/movie?api_key=$apiKey&with_genres=$genre&language=pt"));
+      var jsonDecodeData = jsonDecode(response.body);
+      for (var element in jsonDecodeData["results"]) {
+        genreResult.add(MovieModel.fromMap(element));
+      }
+      print(genreResult);
+
+      return genreResult;
     } on Exception catch (e) {
       throw Exception(e);
     }

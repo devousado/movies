@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:shimmer/shimmer.dart';
 
-import '../carousel.dart';
+import 'carousel.dart';
 
 class CustomShimmer extends StatelessWidget {
   const CustomShimmer({super.key});
@@ -18,8 +18,8 @@ class CustomShimmer extends StatelessWidget {
           shrinkWrap: true,
           children: [
             Carossel(
+              durationTime: 3,
               length: 5,
-              movies: [],
               aspectRatio: 2.1,
               viewportFraction: 0.8,
               itemBuilder: (p0, p1, p2) {
@@ -58,8 +58,8 @@ class CustomShimmer extends StatelessWidget {
             SizedBox(
               height: 290,
               child: Carossel(
+                durationTime: 2,
                 length: 5,
-                movies: [],
                 aspectRatio: 1.0,
                 viewportFraction: 0.5,
                 itemBuilder: (p0, p1, p2) {

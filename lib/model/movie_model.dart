@@ -2,12 +2,12 @@
 class MovieModel {
   String originaltitle;
   bool adult;
-  String backdroppath;
+  String? backdroppath;
   int id;
   String overview;
   String title;
-  var voteaverage;
-  double popularity;
+  dynamic voteaverage;
+  dynamic popularity;
 
   String releasedate;
   MovieModel({
@@ -15,7 +15,7 @@ class MovieModel {
     required this.releasedate,
     required this.originaltitle,
     required this.adult,
-    required this.backdroppath,
+    this.backdroppath,
     required this.id,
     required this.overview,
     required this.title,
@@ -39,7 +39,7 @@ class MovieModel {
       popularity: map["popularity"],
       originaltitle: map['original_title'] as String,
       adult: map['adult'] as bool,
-      backdroppath: map['backdrop_path'] as String,
+      backdroppath: map['backdrop_path'],
       id: map['id'],
       overview: map['overview'] as String,
       title: map['title'] as String,

@@ -18,6 +18,9 @@ class _HomePageState extends ConsumerState<HomePage>
   void initState() {
     ref.read(movieState);
     ref.read(populaFilmState);
+    ref.read(moviePlayngNowState);
+    ref.read(genreState);
+    ref.read(actorState);
     super.initState();
   }
 

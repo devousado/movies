@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:movies/model/cast_model.dart';
 import 'package:movies/state/movie_state.dart';
+import 'package:movies/ui/util/error_text.dart';
 import 'package:movies/ui/util/rating_bar.dart';
 
-import 'package:movies/ui/util/shimmer2.dart';
-import 'package:movies/ui/util/shimmer3.dart';
+import 'package:movies/ui/util/shimmer_movie_description.dart';
+import 'package:movies/ui/util/shimmer_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../model/movie_detail_model.dart';
 
@@ -31,8 +32,10 @@ class MovieDetailPage extends ConsumerWidget {
             Stack(
               children: [
                 SizedBox(
-                  height: 300,
+                  height: MediaQuery.of(context).size.height * 0.42,
                   child: CachedNetworkImage(
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
                     imageUrl:
                         "https://image.tmdb.org/t/p/w500${detail.value!.backdroppath}",
                     fit: BoxFit.cover,
@@ -123,7 +126,7 @@ class MovieDetailPage extends ConsumerWidget {
               height: 10,
             ),
             _customText(
-                text: "Story of Line",
+                text: "Historia",
                 color: Colors.white,
                 fontSize: 20,
                 fontWeight: FontWeight.w800,
@@ -180,6 +183,8 @@ class MovieDetailPage extends ConsumerWidget {
                         )
                       ],
                     ),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
                     progressIndicatorBuilder: (context, url, progress) =>
                         const CustoShimmer3(),
                     imageUrl: castList.value![index].profilepath == null
@@ -194,11 +199,12 @@ class MovieDetailPage extends ConsumerWidget {
         ),
       );
     } else {
-      return Center(
-        child: Text(
-          "erro ao carregar os dados",
-          style: TextStyle(color: Colors.white, fontSize: 25),
+      return Scaffold(
+        backgroundColor: Colors.black,
+        appBar: AppBar(
+          backgroundColor: Colors.black,
         ),
+        body: ErroScreen(error: "Falha ao carregar os dados"),
       );
     }
   }

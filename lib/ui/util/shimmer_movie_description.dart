@@ -23,14 +23,14 @@ class _CustomShimmer2State extends State<CustomShimmer2> {
               color: Colors.grey,
               height: 300,
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Container(
               color: Colors.grey,
               height: 200,
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             SizedBox(
