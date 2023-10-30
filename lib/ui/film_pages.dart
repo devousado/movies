@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:movies/model/actor_model.dart';
 import 'package:movies/model/genre_model.dart';
 import 'package:movies/model/movie_model.dart';
+
 import 'package:movies/state/movie_state.dart';
 import 'package:movies/ui/result_page.dart';
 import 'package:movies/ui/util/search_bottom.dart';
@@ -26,11 +27,16 @@ class _FilmPageState extends ConsumerState<FilmPage> {
   @override
   Widget build(BuildContext context) {
     AsyncValue<List<MovieModel>> movieList = ref.watch(movieState);
+
     AsyncValue<List<MovieModel>> popularFilm = ref.watch(populaFilmState);
     AsyncValue<List<GenreModel>> genreList = ref.watch(genreState);
     AsyncValue<List<ActorModel>> listOfActor = ref.watch(actorState);
     AsyncValue<List<MovieModel>> movieListThaArePlayngNow =
         ref.watch(moviePlayngNowState);
+    if (popularFilm.isRefreshing ||
+        genreList.isRefreshing ||
+        listOfActor.isRefreshing ||
+        movieListThaArePlayngNow.isRefreshing) return CustomShimmer();
     if (movieList is AsyncLoading ||
         popularFilm is AsyncLoading ||
         genreList is AsyncLoading ||
@@ -201,7 +207,13 @@ class _FilmPageState extends ConsumerState<FilmPage> {
     } else {
       return Center(
         child: InkWell(
-          onTap: () {},
+          onTap: () async {
+            ref.invalidate(populaFilmState);
+            ref.invalidate(genreState);
+            ref.invalidate(moviePlayngNowState);
+            ref.invalidate(actorState);
+            ref.invalidate(movieState);
+          },
           child: Text(
             "Erro ao carregar os Dados",
             style: style,

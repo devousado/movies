@@ -28,7 +28,7 @@ class ApiService {
 
       return filmList;
     } on Exception catch (e) {
-      throw Exception(e);
+      throw Exception("erro ao carregar os dados");
     }
   }
 

@@ -3,8 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:movies/ui/film_pages.dart';
 
-import '../state/movie_state.dart';
-
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
@@ -15,18 +13,8 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomePageState extends ConsumerState<HomePage>
     with SingleTickerProviderStateMixin {
   @override
-  void initState() {
-    ref.read(movieState);
-    ref.read(populaFilmState);
-    ref.read(moviePlayngNowState);
-    ref.read(genreState);
-    ref.read(actorState);
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       backgroundColor: Colors.black,
       body: Padding(
         padding: EdgeInsets.only(top: 10),
